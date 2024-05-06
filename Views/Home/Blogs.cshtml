@@ -1,0 +1,368 @@
+﻿@using System.Security.Claims
+@model IEnumerable<Bislerium.Models.BlogsWithReactionsViewModel>
+@{
+    ViewData["Title"] = "Blogs Page";
+    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+<style>
+    .mainSection {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 20px 0;
+    }
+
+        .mainSection .continaer {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            width: 80%;
+            height: 80%;
+            gap: 20px;
+        }
+
+    aside {
+        width: 100%;
+        background-color: #f1f1f1;
+        padding: 20px;
+    }
+
+    .filter {
+        margin-bottom: 20px;
+    }
+
+        .filter h3 {
+            margin-bottom: 10px;
+            font-size: 25px;
+        }
+
+    .filter__item {
+        margin-bottom: 20px;
+    }
+
+        .filter__item label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .filter__item select {
+            width: 100%;
+            padding: 10px 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .filter__item input {
+            width: 100%;
+            padding: 10px 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .filter__item button {
+            width: 100%;
+            padding: 10px 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+
+    .body {
+        width: 100%;
+        height: 100%;
+    }
+
+    .serch {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        gap: 10px;
+    }
+
+        .serch input {
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            height: 50px;
+        }
+
+        .serch button {
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #333;
+            color: #fff;
+            height: 50px;
+            cursor: pointer;
+        }
+
+            .serch button:hover {
+                background-color: #555;
+            }
+
+    .blogs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .blog {
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        transition: 0.4s;
+    }
+
+        .blog:hover {
+            box-shadow: 0 8px 8px 0 rgb(142, 142, 142);
+            transform: translateY(-10px);
+            color: #ff5d06;
+        }
+
+        .blog img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+    .blog__content {
+        margin-top: 10px;
+    }
+
+        .blog__content h3 {
+            margin-bottom: 10px;
+        }
+
+        .blog__content h4 {
+            margin-bottom: 10px;
+            font-size: 15px;
+            color: #777;
+        }
+
+        .blog__content p {
+            margin-bottom: 10px;
+        }
+
+        .blog__content .desc {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-align: justify;
+        }
+
+        .blog__content .buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .blog__content .readMore {
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .blog__content .vote button {
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            background-color: #fff;
+            color: #333;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .blog__content .vote .selected {
+            background-color: #333;
+            color: #fff;
+        }
+
+</style>
+
+<div class="mainSection">
+    <div class="continaer">
+        <!-- filter -->
+        <aside>
+            <div class="filter">
+                <h3>Filter</h3>
+                <div class="filter__item">
+                    <label for="date">Date</label>
+                    <input type="date" id="filterDate" />
+                </div>
+                <div class="filter__item">
+                    <button id="filterButton">Filter</button>
+                </div>
+            </div>
+        </aside>
+        <!-- display blogs -->
+        <section class="body">
+            <div class="serch">
+                <input type="text" placeholder="Search" />
+                <button>Search</button>
+            </div>
+            <div class="blogs">
+
+                @foreach (var item in Model)
+                {
+                    <div class="blog" data-date="@item.Blog.CreatedDate.ToString("yyyy-MM-dd")">
+                        <img src="@item.Blog.Image" alt="blog" />
+                        <div class="blog__content">
+                            <h3>@Html.DisplayFor(modelItem => item.Blog.Heading)</h3>
+                            <h4>
+                                Author: @Html.DisplayFor(modelItem => item.Blog.User.UserName)<br />
+                                (<span class="created_date">@item.Blog.CreatedDate.ToString("dd MMM yyyy")</span>)
+                            </h4>
+                            <p class="desc">
+                                @Html.DisplayFor(modelItem => item.Blog.Description)
+                            </p>
+                            <div class="buttons">
+                                <button class="readMoreButton readMore" data-id="@item.Blog.Id">Read More</button>
+                                <div class="vote">
+                                    <button class="upVote @(item.IsUpvoted ? "selected" : "")" data-id="@item.Blog.Id">
+                                        @item.UpvoteCount <!-- Display Upvote count -->
+                                        <i class="fas fa-thumbs-up"></i>
+                                    </button>
+                                    <button class="downVote @(item.IsDownvoted ? "selected" : "")" data-id="@item.Blog.Id">
+                                        @item.DownvoteCount <!-- Display Downvote count -->
+                                        <i class="fas fa-thumbs-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+        </section>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            // Event listener for search input
+            $('input[type="text"]').on('input', function () {
+                var searchText = $(this).val();
+                filterBlogsByName(searchText);
+            });
+
+            // Event listener for date filter button
+            $('#filterButton').on('click', function () {
+                var selectedDate = $('#filterDate').val();
+                filterBlogsByDate(selectedDate);
+            });
+
+            // JavaScript function to redirect to the BlogDescription action with the blog ID
+            $('.readMoreButton').on('click', function () {
+                var blogId = $(this).data('id');
+                redirectToDescription(blogId);
+            });
+        });
+
+        // Function to filter blogs by name
+        function filterBlogsByName(searchText) {
+            $('.blog').each(function () {
+                var blogName = $(this).find('h3').text().toLowerCase();
+                if (blogName.includes(searchText.toLowerCase())) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+
+        // Function to filter blogs by date
+        function filterBlogsByDate(selectedDate) {
+            $('.blog').each(function () {
+                var blogDate = $(this).data('date');
+
+                console.log(blogDate);
+                console.log(selectedDate);
+                if (blogDate === selectedDate) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+
+        // JavaScript function to redirect to the BlogDescription action with the blog ID
+        function redirectToDescription(blogId) {
+            var url = "/Home/BlogDescription?id=" + blogId;
+            window.location.href = url;
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.vote .upVote').click(function () {
+                var blogId = $(this).data('id');
+
+                console.log(blogId);
+                console.log(" ajax =====================================");
+
+                $.ajax({
+                    url: "/User/AddBlogUpVote/" + blogId,
+                    type: 'POST',
+                    contentType: 'application/json', // Specify the content type as JSON
+                    data: { BlogId: blogId }, // Include required fields
+                    dataType: 'json',
+                    success: function (response) {
+                        // Handle success response, like updating the UI
+                        console.log(response.message);
+                        window.location.reload();
+
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error response, like showing an error message
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+            $('.vote .downVote').click(function () {
+                var blogId = $(this).data('id');
+
+                console.log(blogId);
+                console.log(" ajax =====================================");
+
+                $.ajax({
+                    url: "/User/AddBlogDownVote/" + blogId,
+                    type: 'POST',
+                    contentType: 'application/json', // Specify the content type as JSON
+                    data: { BlogId: blogId }, // Include required fields
+                    dataType: 'json',
+                    success: function (response) {
+                        // Handle success response, like updating the UI
+                        console.log(response.message);
+                        // reload page
+                        window.location.reload();
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error response, like showing an error message
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+
+
+
+
+        function todescription(blogId) {
+            window.location.href = "/Home/BlogDescription/" + blogId;
+        }
+
+
+    </script>
+}

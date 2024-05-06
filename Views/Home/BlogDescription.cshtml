@@ -1,0 +1,617 @@
+﻿@model Bislerium.Models.Blogs // Assuming Blogs is the name of your Blog model
+@{
+    ViewData["Title"] = " Blog Description ";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- banner -->
+<section class="banner">
+    <div class="container">
+        <div class="image">
+            <img src="@Model.Image" alt="" />
+
+            <div class="text">
+                <h1 class="text-4xl font-bold text-white">@Model.Heading</h1>
+                <p class="text-lg font-semibold text-white">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis
+                    quod, voluptates, quae, quos quidem quibusdam
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- banner end -->
+<style>
+    .description {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem 10rem;
+    }
+
+        .description .content {
+            width: 100%;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+            .description .content .header {
+                display: flex;
+                flex-direction: column;
+            }
+
+                .description .content .header .title {
+                    font-size: 50px;
+                    font-weight: 600;
+                }
+
+                .description .content .header .auther-details {
+                    display: flex;
+                    align-items: center;
+                    flex-direction: row;
+                    gap: 10px;
+                }
+
+                    .description .content .header .auther-details span {
+                        font-size: 50px;
+                        font-weight: 300;
+                    }
+
+                    .description .content .header .auther-details h5 {
+                        font-size: 20px;
+                        font-weight: 600;
+                    }
+
+        .description .body p {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+            .description .body p a {
+                color: #007bff;
+                text-decoration: underline;
+            }
+
+                .description .body p a:hover {
+                    color: #0056b3;
+                }
+
+            .description .body p::first-letter {
+                font-size: 24px;
+                font-weight: bold;
+                color: #ff4500;
+            }
+</style>
+
+<section class="description">
+    <div class="content">
+        <div class="header">
+            <div class="title">@Model.Heading</div>
+            <div class="auther-details">
+                @if (Model.User != null)
+                {
+                    <h5>@Model.User.UserName</h5>
+                }
+                else
+                {
+                    <h5>Unknown</h5>
+                }
+                <span>/</span>
+                <p>@Model.CreatedDate.ToString("dd/MM/yyyy")</p>
+            </div>
+        </div>
+        <div class="body">
+            <p>@Model.Description</p>
+        </div>
+    </div>
+</section>
+<!--comments-->
+
+<style>
+    .blog-comments {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem 10rem;
+        gap: 20px;
+    }
+
+        .blog-comments .header {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #000;
+        }
+
+            .blog-comments .header h1 {
+                font-size: 35px;
+                font-weight: 600;
+                padding: 10px 0;
+            }
+
+    .comments .header span {
+        font-size: 20px;
+        font-weight: 300;
+    }
+
+    .blog-comments .comment-form {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+    }
+
+        .blog-comments .comment-form form {
+            width: 100%;
+            display: flex; /* Use flexbox */
+            align-items: center; /* Align items vertically */
+            gap: 1rem;
+        }
+
+            .blog-comments .comment-form form .userImage img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+            }
+
+            .blog-comments .comment-form form .comment-input {
+                flex: 1;
+            }
+
+                .blog-comments .comment-form form .comment-input input {
+                    flex: 1;
+                    width: 100%;
+                    height: 50px;
+                    border: 1px solid #000;
+                    border-radius: 5px;
+                    padding: 0 10px;
+                    outline: none;
+                }
+
+            .blog-comments .comment-form form .button button {
+                width: 50px;
+                height: 50px;
+                border: none;
+                background-color: #007bff;
+                color: #fff;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+    .blog-comments .all-comments {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .blog-comments .comment {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+        .blog-comments .comment .firstcmt {
+            display: flex;
+            gap: 10px;
+        }
+
+            .blog-comments .comment .firstcmt .image img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+            }
+
+            .blog-comments .comment .firstcmt .details {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                border: 1px solid #000;
+                padding: 10px;
+                border-radius: 5px;
+            }
+
+                .blog-comments .comment .firstcmt .details h5 {
+                    font-size: 20px;
+                    font-weight: 600;
+                }
+
+                .blog-comments .comment .firstcmt .details p {
+                    font-size: 15px;
+                    font-weight: 300;
+                }
+
+                .blog-comments .comment .firstcmt .details p {
+                    font-size: 15px;
+                    font-weight: 300;
+                }
+
+                .blog-comments .comment .firstcmt .details p {
+                    font-size: 15px;
+                    font-weight: 300;
+                }
+
+        .blog-comments .comment .subcmt {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-left: 50px;
+        }
+
+            .blog-comments .comment .subcmt .firstSubcmt {
+                display: flex;
+                gap: 10px;
+            }
+
+                .blog-comments .comment .subcmt .firstSubcmt .image img {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                }
+
+                .blog-comments .comment .subcmt .firstSubcmt .details {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    border: 1px solid #000;
+                    padding: 10px;
+                    border-radius: 5px;
+                    gap: 5px;
+                }
+
+                    .blog-comments .comment .subcmt .firstSubcmt .details h5 {
+                        font-size: 20px;
+                        font-weight: 600;
+                    }
+
+        .blog-comments .comment .react {
+            display: flex;
+            gap: 10px;
+        }
+
+            .blog-comments .comment .react .like {
+                display: flex;
+                gap: 10px;
+                padding: 5px;
+                border: 1px solid transparent;
+                transition: 0.5s;
+            }
+
+                .blog-comments .comment .react .like:hover {
+                    border: 1px solid #000;
+                    border-radius: 10px;
+                }
+
+                .blog-comments .comment .react .like span {
+                    font-size: 15px;
+                    font-weight: 300;
+                }
+
+                .blog-comments .comment .react .like i {
+                    font-size: 15px;
+                    font-weight: 300;
+                }
+
+                .blog-comments .comment .react .like button {
+                    font-size: 15px;
+                    font-weight: 300;
+                    background-color: transparent;
+                    border: none;
+                    cursor: pointer;
+                }
+
+        .blog-comments .comment .addReplyForm {
+            display: none;
+        }
+
+            .blog-comments .comment .addReplyForm form {
+                display: flex;
+                gap: 10px;
+            }
+
+                .blog-comments .comment .addReplyForm form .userImage img {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                }
+
+                .blog-comments .comment .addReplyForm form .comment-input {
+                    flex: 1;
+                }
+
+                    .blog-comments .comment .addReplyForm form .comment-input input {
+                        flex: 1;
+                        width: 100%;
+                        height: 50px;
+                        border: 1px solid #b5b5b5;
+                        border-radius: 5px;
+                        padding: 0 10px;
+                        outline: none;
+                    }
+
+                .blog-comments .comment .addReplyForm form .button button {
+                    width: 50px;
+                    height: 50px;
+                    border: none;
+                    background-color: #007bff;
+                    color: #fff;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+</style>
+
+
+<section class="blog-comments">
+    <div class="header">
+        <h1>Comments</h1>
+        <span> 233 Comments </span>
+    </div>
+    <div class="comment-form">
+        <form id="commentForm">
+            <div class="userImage">
+                <img src="~/img/banner1.jpg" alt="" />
+            </div>
+            <div class="comment-input">
+                <input type="text" id="inputField" name="comment" />
+            </div>
+            <div class="button">
+                <button type="submit">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="all-comments">
+    </div>
+</section>
+
+<script>
+    var blogId = '@Html.Raw(Json.Serialize(Model.Id))';
+    var parentComments = [];
+
+
+    function capitalizeFirstLetter() {
+        let input = document.getElementById("inputField");
+        let inputValue = input.value;
+        let capitalizedValue =
+            inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+        input.value = capitalizedValue;
+    }
+
+    function addReplyForm(commentId) {
+        var replyForm = $("#replyForm-" + commentId);
+        replyForm.toggle();
+    }
+
+
+    $(document).ready(function () {
+
+        fetchCommnet();
+        // Add comment form submission
+        $('#commentForm').on('submit', function (e) {
+            e.preventDefault();
+
+            // Get the value of the input field
+            var value = $('#inputField').val();
+
+            console.log(value);
+            console.log(blogId);
+
+            // AJAX request
+            $.ajax({
+                url: '/User/AddComment/' + blogId,
+                type: 'POST',
+                data: { BlogId: blogId, CommentText: value },
+                dataType: 'json',
+                success: function (response) {
+                    // Handle success response
+                    console.log(response.message);
+
+                    // Clear input field after successful submission
+                    $('#inputField').val('');
+
+
+                    parentComments = [];
+                    // Fetch comments again
+                    fetchCommnet();
+
+                    // Update UI if necessary
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+
+        // Add sub-comment form submission
+        // Event listener for sub-comment form submission
+        $('[id^="subCommentForm"]').on('submit', function (e) {
+            e.preventDefault();
+
+            // Extract parentCommentId from form ID
+            var parentCommentId = $(this).attr('id').split('-')[1];
+
+            // Get the value of the input field within the current form
+            var commentText = $('#subCommentInput-' + parentCommentId).val();
+
+            console.log(commentText);
+            console.log(parentCommentId);
+
+            // AJAX request to add sub-comment
+            // $.ajax({
+            //     url: '/User/AddSubComment/' + parentCommentId,
+            //     type: 'POST',
+            //     data: { ParentCommentID: parentCommentId, CommentText: commentText },
+            //     dataType: 'json',
+            //     success: function (response) {
+            //         // Handle success response
+            //         console.log(response.message);
+
+            //         // Fetch comments again after adding sub-comment
+            //         fetchComment();
+            //     },
+            //     error: function (xhr, status, error) {
+            //         // Handle error response
+            //         console.error(xhr.responseText);
+            //     }
+            // });
+        });
+
+
+
+
+    });
+
+
+
+    // fetch commnet
+    function fetchCommnet() {
+        // fetch comment
+        $.ajax({
+            url: "/Home/FetchComment?blogId=" + blogId,
+            type: "GET",
+            success: function (data) {
+
+                data.forEach(function (comment) {
+                    if (!comment.parentCommentID) {
+                        comment.replies = [];
+                        parentComments.push(comment);
+                    } else {
+                        var parentComment = parentComments.find(c => c.id === comment.parentCommentID);
+                        if (parentComment) {
+                            parentComment.replies.push(comment);
+                        }
+                    }
+                });
+
+                // Render the comments
+                renderComments(parentComments);
+
+                // Update comment count
+                $("#commentCount").text(parentComments.length + " Comments");
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+    // Render comments
+    function renderComments(comments) {
+        var allCommentsDiv = $(".all-comments");
+        allCommentsDiv.empty();
+        console.log(comments);
+        comments.forEach(function (comment) {
+            var commentHtml = `
+                            <div class="comment">
+                                <div class="firstcmt">
+                                    <div class="image">
+                                               <i class="fa-regular fa-user" style="
+                              width: 50px;
+                              height: 50px;
+                              font-size: 30px;
+                              border: 2px solid #000;
+                              border-radius: 50%;
+                              display: flex;
+                              justify-content: center;
+                              align-items: center;
+                              "></i>
+                                    </div>
+                                    <div class="details">
+                                        <h5>${comment.user.userName}</h5>
+                                        <p>${comment.createdDate}</p>
+                                        <p>${comment.commentText}</p>
+                                        <div class="react">
+                                            <div class="like">
+                                                <span>12</span>
+                                                <i class="fa-regular fa-thumbs-up"></i>
+                                            </div>
+                                            <div class="like">
+                                                <span>12</span>
+                                                <i class="fa-regular fa-thumbs-down"></i>
+                                            </div>
+                                            <div class="like">
+                                                    <button onclick="addReplyForm(${comment.id})" >
+                                                    Reply
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                     <div class="addReplyForm" id="replyForm-${comment.id}">
+                                       <form id="subCommentForm" >
+                                        <div class="userImage">
+                                                <!-- <img src="~/img/banner1.jpg" alt="" /> -->
+                                        </div>
+                                        <div class="comment-input">
+                                                <input type="text"  oninput="capitalizeFirstLetter()" id="subCommentInput-${comment.id}" placeholder="Write a reply..." />
+                                        </div>
+                                        <div class="button">
+                                                <button class="">
+                                                <i class="fas fa-paper-plane"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="subcmt">
+                                    ${renderReplies(comment.replies)}
+                                </div>
+                            </div>
+                        `;
+
+            allCommentsDiv.append(commentHtml);
+        });
+    }
+
+    // Render replies
+    function renderReplies(replies) {
+        var repliesHtml = "";
+
+        replies.forEach(function (reply) {
+            repliesHtml += `
+                        <div class="firstcmt">
+                            <div class="image">
+                                        <i class="fa-regular fa-user" style="
+                              width: 50px;
+                              height: 50px;
+                              font-size: 30px;
+                              border: 2px solid #000;
+                              border-radius: 50%;
+                              display: flex;
+                              justify-content: center;
+                              align-items: center;
+                              "></i>
+                            </div>
+                            <div class="details">
+                                <h5><u>${reply.user.userName}</u> replied by ${reply.parentComment.user.userName}</h5>
+                                <p>${reply.createdDate}</p>
+                                <p>${reply.commentText}</p>
+                                <div class="react">
+                                    <div class="like">
+                                        <span>12</span>
+                                        <i class="fa-regular fa-thumbs-up"></i>
+                                    </div>
+                                    <div class="like">
+                                        <span>12</span>
+                                        <i class="fa-regular fa-thumbs-down"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+        });
+
+        return repliesHtml;
+    }
+
+
+
+</script>
+
+

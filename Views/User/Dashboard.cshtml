@@ -1,0 +1,516 @@
+﻿@using Bislerium.Areas.Identity.Data;
+
+@{
+    ViewData["Title"] = "User dashboard";
+    var UserVlogData = TempData["UserVlogData"] as BlogsWithReactionsViewModel;
+    var user = TempData["user"] as BisleriumUser;
+}
+<style>
+    .profile {
+        background-color: #f5f5f5;
+    }
+
+        .profile .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+            padding: 0 10rem;
+        }
+
+        .profile .backgroundImage {
+            width: 95%;
+            height: 400px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+        }
+
+            .profile .backgroundImage img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 20px;
+            }
+
+        .profile .profileInfo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: -100px;
+        }
+
+            .profile .profileInfo .profileImage {
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+                overflow: hidden;
+                border: 5px solid #fff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+                .profile .profileInfo .profileImage img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+            .profile .profileInfo .userName {
+                margin-top: 20px;
+                text-align: center;
+            }
+
+                .profile .profileInfo .userName h1 {
+                    font-size: 30px;
+                    color: #333;
+                }
+
+            .profile .profileInfo button {
+                margin-top: 20px;
+                padding: 10px 20px;
+                background-color: #333;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+                .profile .profileInfo button:hover {
+                    background-color: #555;
+                }
+
+        .profile .body {
+            display: grid;
+            width: 100%;
+            grid-template-columns: 1fr 3fr;
+            margin-top: 50px;
+            gap: 20px;
+        }
+
+        .profile .sidebar {
+            grid-column: 1/2;
+            max-height: 250px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+            .profile .sidebar .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-bottom: 20px;
+            }
+
+                .profile .sidebar .header h1 {
+                    font-size: 25px;
+                    color: #333;
+                }
+
+                .profile .sidebar .header a {
+                    background-color: #333;
+                    color: #ffffff;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    text-decoration: none;
+                }
+
+                    .profile .sidebar .header a:hover {
+                        background-color: #555;
+                    }
+
+            .profile .sidebar .user-details {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                cursor: pointer;
+            }
+
+                .profile .sidebar .user-details p {
+                    font-size: 16px;
+                    color: #333;
+                }
+
+                .profile .sidebar .user-details strong {
+                    font-weight: bold;
+                }
+
+                .profile .sidebar .user-details a {
+                    color: #333;
+                    text-decoration: none;
+                }
+
+        .profile .newsFeed {
+            grid-column: 2/3;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .profile .newsFeed-body {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .profile .newsFeed .add-blog {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+            .profile .newsFeed .add-blog form {
+                display: flex;
+                flex-direction: row;
+                gap: 20px;
+            }
+
+            .profile .newsFeed .add-blog .file-upload {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                height: auto;
+            }
+
+                .profile .newsFeed .add-blog .file-upload input {
+                    display: none;
+                }
+
+                .profile .newsFeed .add-blog .file-upload .file-label {
+                    height: 100px;
+                    width: 100px;
+                    border-radius: 50%;
+                    padding: 10px 20px;
+                    background-color: #333;
+                    color: #fff;
+                    cursor: pointer;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+            .profile .newsFeed .add-blog .body {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                margin-top: 0;
+            }
+
+                .profile .newsFeed .add-blog .body input {
+                    padding: 10px;
+                    border: 1px solid #333;
+                    border-radius: 5px;
+                }
+
+                .profile .newsFeed .add-blog .body textarea {
+                    width: 100%;
+                    height: 100px;
+                    padding: 10px;
+                    border: 1px solid #333;
+                    border-radius: 5px;
+                    resize: none;
+                }
+
+                .profile .newsFeed .add-blog .body button {
+                    padding: 5px 10px;
+                    background-color: #333;
+                    color: #fff;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+
+                    .profile .newsFeed .add-blog .body button:hover {
+                        background-color: #555;
+                    }
+
+                    .profile .newsFeed .add-blog .body button:disabled {
+                        background-color: #ccc;
+                        cursor: not-allowed;
+                    }
+
+                        .profile .newsFeed .add-blog .body button:disabled:hover {
+                            background-color: #ccc;
+                        }
+
+        .profile .newsFeed h1 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .profile .blog {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            gap: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+            .profile .blog .blogImage {
+                width: 30%;
+                height: 200px;
+                overflow: hidden;
+                border-radius: 10px;
+            }
+
+                .profile .blog .blogImage img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+            .profile .blog .blogContent {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 70%;
+            }
+
+                .profile .blog .blogContent .title {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding-bottom: 1rem;
+                }
+
+                    .profile .blog .blogContent .title h2 {
+                        font-size: 20px;
+                        color: #333;
+                    }
+
+                .profile .blog .blogContent .btn button {
+                    padding: 5px 10px;
+                    background-color: #333;
+                    color: #fff;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+
+                    .profile .blog .blogContent .btn button:hover {
+                        background-color: #555;
+                    }
+
+                .profile .blog .blogContent p {
+                    font-size: 16px;
+                    color: #333;
+                    text-align: justify;
+                }
+    /* show only 200 letters */
+    .blogContent .blog-desc {
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .profile .blog .blogContent .blogReact {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+        .profile .blog .blogContent .blogReact .vote {
+            display: flex;
+            gap: 20px;
+        }
+
+            .profile .blog .blogContent .blogReact .vote button {
+                padding: 5px 10px;
+                background-color: #333;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+                .profile .blog .blogContent .blogReact .vote button:hover {
+                    background-color: #555;
+                }
+
+        .profile .blog .blogContent .blogReact .commments button {
+            padding: 5px 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            .profile .blog .blogContent .blogReact .commments button:hover {
+                background-color: #555;
+            }
+
+    .profile .comments {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+        .profile .comments .comment {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+            .profile .comments .comment .commentImage {
+                width: 100px;
+                height: 100px;
+                overflow: hidden;
+                border-radius: 50%;
+            }
+
+                .profile .comments .comment .commentImage img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+
+            .profile .comments .comment .commentContent {
+                width: 100%;
+            }
+
+                .profile .comments .comment .commentContent .commentUser {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+
+                    .profile .comments .comment .commentContent .commentUser h2 {
+                        font-size: 20px;
+                        color: #333;
+                    }
+</style>
+
+<section class="profile">
+    <div class="container">
+        <div class="backgroundImage">
+            <img src="~/img/banner1.jpg" alt="background" />
+        </div>
+        <div class="profileInfo">
+            <div class="profileImage">
+                <img src="~/img/banner1.jpg" alt="profile" />
+            </div>
+
+            <div class="userName">
+                <h1> @user.UserName</h1>
+            </div>
+        </div>
+        <div class="body">
+            <div class="sidebar">
+                <div class="header">
+                    <h1>My Profile</h1>
+                    <a href="editProfile.html">Edit</a>
+                </div>
+                <div class="user-details">
+                    <p><strong>Username:</strong>  @user.UserName</p>
+                    <p>
+                        <strong>Email:</strong>
+                        @user.Email
+                    </p>
+
+                </div>
+            </div>
+            <div class="newsFeed">
+                <div class="newsFeed-body">
+                    <div class="add-blog">
+                        <form asp-controller="User" asp-action="CreateBlog" enctype="multipart/form-data">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="file-upload">
+                                <label for="image-upload" class="file-label">Image</label>
+                                <input type="file"
+                                       id="image-upload"
+                                       name="image"
+                                       accept="image/*"
+                                       required />
+                            </div>
+                            <div class="body">
+                                <input name="Heading" class="form-control" placeholder="BLog Header" />
+                                <textarea id="blog-content"
+                                          name="Description"
+                                          placeholder="Write your blog post here..."
+                                          required></textarea>
+                                <button type="submit">Add Blog</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    @foreach (var blogData in Model)
+                    {
+                        <div class="blog readMoreButton">
+                            <div class="blogImage">
+                                <img src="@blogData.Blog.Image" alt="blog" /> <!-- Assuming Image property contains image URL -->
+                            </div>
+                            <div class="blogContent">
+                                <div class="title">
+                                    <h2>@blogData.Blog.Heading</h2>
+                                    <span>@blogData.Blog.CreatedDate.ToString("dd MMM yyyy")</span>
+                                    <div class="btn">
+                                        <a asp-controller="User" asp-action="EditBlog" asp-route-id="@blogData.Blog.Id">
+                                            <button>Edit</button>
+                                        </a>
+                                        <a asp-controller="User" asp-action="DeleteBlog" asp-route-id="@blogData.Blog.Id" onclick="return confirm('Are you sure you want to delete this blog?')">
+                                            <button>Delete</button>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <p class="blog-desc">@blogData.Blog.Description</p>
+
+                                <!-- Blog React -->
+                                <div class="blogReact">
+                                    <div class="vote">
+                                        <div class="up-vote">
+                                            <button><span>@blogData.UpvoteCount</span> <i class="fas fa-thumbs-up"></i></button>
+                                        </div>
+                                        <div class="down-vote">
+                                            <button><span>@blogData.DownvoteCount</span> <i class="fas fa-thumbs-down"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="vote">
+                                        <button><span>@blogData.CommentCount</span> Comments</button>
+                                        <button class="viewAll" data-id="@blogData.Blog.Id">Read More</button>
+                                        <input type="hidden" name="name" value="@blogData.Blog.Id" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // JavaScript function to redirect to the BlogDescription action with the blog ID
+        $('.viewAll').on('click', function () {
+            var blogId = $(this).data('id');
+
+            console.log(blogId);
+            redirectToDescription(blogId);
+        });
+
+        // Function to redirect to the BlogDescription action with the blog ID
+        function redirectToDescription(blogId) {
+            var url = "/Home/BlogDescription?id=" + blogId;
+            window.location.href = url;
+        }
+    });
+</script>

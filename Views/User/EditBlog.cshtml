@@ -1,0 +1,152 @@
+﻿@model Bislerium.Models.Blogs
+
+@{
+    ViewData["Title"] = "Edit Blog";
+}
+
+<style>
+    .content {
+        margin-top: 100px;
+    }
+
+    .content__inner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .content__left {
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .content__left__inner {
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .content__left__title {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+        .content__left__title h2 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+    .content__left__form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form__group {
+        margin-bottom: 20px;
+    }
+
+        .form__group img {
+            margin-top: 10px;
+        }
+
+        .form__group label {
+            font-size: 16px;
+        }
+
+        .form__group input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .form__group textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 100%;
+            height: 200px;
+            resize: none;
+        }
+
+    .form__group_button {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+        .form__group_button button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #000;
+            color: #fff;
+            cursor: pointer;
+        }
+
+</style>
+
+
+<!-- content -->
+<div class="content">
+    <div class="content__inner">
+        <div class="content__left">
+            <div class="content__left__inner">
+                <div class="content__left__title">
+                    <h2>Edit Blog : Blog Name</h2>
+                </div>
+                <form asp-action="EditBlog" enctype="multipart/form-data">
+                    <div class="form__group">
+                        <label asp-for="Heading" class="control-label"></label>
+                        <input asp-for="Heading" class="form-control" />
+                        <span asp-validation-for="Heading" class="text-danger"></span>
+                    </div>
+                    <div class="form__group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <textarea id="description" asp-for="Description"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form__group">
+                        <label asp-for="Image" class="control-label"></label>
+                        <input asp-for="Image" type="file" class="form-control" />
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                        <img id="imagePreview"
+                             src="#"
+                             alt="Image Preview"
+                             style="display: none; max-width: 100%" />
+                    </div>
+                    <div class="form__group_button">
+                        <a href="##">
+                            <button type="submit">Save</button>
+                        </a>
+                        <a href="##">
+                            <button>Cancel</button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- content end -->
+
+<script>
+    function previewImage(input) {
+        var imagePreview = document.getElementById("imagePreview");
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = "block";
+            };
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            imagePreview.style.display = "none";
+        }
+    }
+</script>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

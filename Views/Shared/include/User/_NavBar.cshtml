@@ -1,0 +1,336 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Bislerium.Areas.Identity.Data
+
+@inject SignInManager<BisleriumUser> SignInManager
+@inject UserManager<BisleriumUser> UserManager
+
+
+<header class="" s>
+    <div class="container mx-auto px-4 flex justify-between items-center">
+        <div class="logo">
+            <span class="font-bold">Bolgs</span>
+        </div>
+
+        <div class="nav">
+            <ul class="inline-flex space-x-8">
+                <li>
+                    <a asp-area="" asp-controller="Home" asp-action="Index"
+                       class="font-bold font-semibold text-gray-800 hover:text-gray-900">
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a asp-area="" asp-controller="Home" asp-action="Blogs"
+                       class="font-bold font-semibold text-gray-800 hover:text-gray-900">
+                        Blogs
+                    </a>
+                </li>
+                <li>
+                    <a href="#"
+                       class="font-bold font-semibold text-gray-800 hover:text-gray-900">
+                        Contact
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="profile">
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <button>
+                    <a asp-area="" asp-controller="User" asp-action="Dashboard"> Profile </a>
+                </button>
+                <!-- notification -->
+                <button type="button"
+                        class="notification__button"
+                        style="position: relative;"
+                        onclick="toggleNotification()">
+                    <h4 class="notification__popUp" id="UnreadNotifications"
+                        style="
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background-color: rgb(224, 147, 31);
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      text-align: center;
+      line-height: 20px;
+
+                              ">
+                    </h4>
+                    <i class="fa-solid fa-bell"></i>
+                </button>
+                <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
+                </form>
+            }
+            else
+            {
+                <button type="button" class="login">
+                    <a asp-area="Identity" asp-page="/Account/Login"> Log in </a>
+                </button>
+            }
+        </div>
+
+        <style>
+            .notification {
+                position: fixed;
+                top: 70px;
+                width: 300px;
+                background-color: #fff;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                border-radius: 5px;
+                z-index: 1000;
+                transition: right 0.5s ease;
+            }
+
+                .notification.active {
+                    right: 165px; /* Move it to the right when active */
+                }
+
+                .notification.close {
+                    right: -300px;
+                }
+
+            .notification__message {
+                padding: 1rem;
+            }
+
+            .notification__message__header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 1rem;
+            }
+
+                .notification__message__header h3 {
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                }
+
+            .notification__message__body {
+                display: flex;
+                flex-direction: column;
+                overflow: auto;
+                height: 300px;
+            }
+
+            .notification__message__body__item {
+                display: flex;
+                margin-bottom: 1rem;
+                border: 1px solid #000000;
+                border-radius: 5px;
+                padding: 0.5rem;
+                position: relative;
+            }
+
+                .notification__message__body__item .markAsRead {
+                    color: rgb(255, 119, 1);
+                    position: absolute;
+                    top: 2px;
+                    left: 4px;
+                }
+
+                .notification__message__body__item:hover {
+                    background-color: #f1f1f1;
+                }
+
+                .notification__message__body__item:last-child {
+                    margin-bottom: 0;
+                }
+
+
+            .notification__message__body__item__avatar {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+                .notification__message__body__item__avatar img {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                }
+
+            .notification__message__body__item__content {
+                margin-left: 1rem;
+            }
+
+                .notification__message__body__item__content p {
+                    margin-bottom: 0.5rem;
+                }
+
+                .notification__message__body__item__content span {
+                    font-size: 0.8rem;
+                    color: #777;
+                }
+
+            .notification__message__footer {
+                display: flex;
+                justify-content: center;
+                margin-top: 1rem;
+            }
+
+                .notification__message__footer button {
+                    padding: 0.5rem 1rem;
+                    background-color: #f1f1f1;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                }
+
+            .notification__close {
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+            }
+
+                .notification__close i {
+                    font-size: 1.5rem;
+                    color: #777;
+                }
+        </style>
+        <!-- notification message -->
+        <div class="notification close" id="notification">
+            <div class="notification__message">
+                <div class="notification__message__header">
+                    <h3>Notification</h3>
+                    <button class="notification__close"
+                            onclick="toggleNotification()">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                </div>
+                <div class="notification__message__body" id="notificationContainer">
+                    <!-- Notifications will be dynamically added here -->
+                </div>
+                <div class="notification__message__footer">
+                    <button>View all</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</header>
+<script>
+    function toggleNotification() {
+        const notification = document.getElementById("notification");
+        if (notification.classList.contains("active")) {
+            notification.classList.remove("active");
+            notification.classList.add("close");
+            return;
+        } else {
+            notification.classList.add("active");
+            notification.classList.remove("close");
+        }
+    }
+</script>
+<!-- track scrole and set header positon it fixed-->
+<script>
+    window.addEventListener("scroll", function () {
+        const header = document.querySelector("header");
+        if (window.scrollY > 0) {
+            header.style.position = "fixed";
+        } else {
+            header.style.position = "";
+        }
+    });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        fetchNotification();
+        UnreadNotifications();
+    });
+
+    function fetchNotification() {
+        $.ajax({
+            url: "/User/Notifications",
+            type: "GET",
+            success: function (data) {
+                displayNotifications(data);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+    function displayNotifications(notifications) {
+        var container = $('#notificationContainer');
+
+        // Clear previous notifications
+        container.empty();
+
+        // Iterate over the notifications array
+        notifications.forEach(function (notification) {
+            // Convert the ISO date string to a JavaScript Date object
+            var createdDate = new Date(notification.createdDate);
+
+            // Format the date as desired
+            var formattedDate = createdDate.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            });
+
+            // Create HTML structure for each notification
+            var html = `
+                                    <div class="notification__message__body__item" onclick="newLink(${notification.blogId}, ${notification.id})">
+
+                                   ${notification.isRead ? '' : '<div class="markAsRead">New</div>'}
+                                <div class="notification__message__body__item__avatar">
+                                    <img src="/img/banner1.jpg" alt="avatar" />
+                                </div>
+                                <div class="notification__message__body__item__content">
+                                    <p>
+                                        <span class="font-bold">${notification.user.userName}</span> has ${notification.type} on your post
+                                    </p>
+                                    <span>${formattedDate}</span>
+                                </div>
+                            </div>
+                        `;
+
+            // Append the HTML to the container
+            container.append(html);
+        });
+    }
+
+
+    function newLink(blogId, notificationId){
+
+        console.log(blogId);
+        console.log(notificationId);
+
+        $.ajax({
+            url: "/User/MarkAsRead/" + notificationId,
+            type: "POST",
+            success: function (data) {
+                console.log(data);
+                fetchNotification();
+                UnreadNotifications();
+
+                window.location.href = "/Home/BlogDescription/" + blogId;
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+
+
+    function UnreadNotifications() {
+        $.ajax({
+            url: "/User/UnreadNotifications",
+            type: "GET",
+            success: function (data) {
+                // Update the content of the h4 element
+                $('#UnreadNotifications').text(data.count);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
+</script>
