@@ -1,0 +1,136 @@
+﻿<div class="sidebar">
+    <div class="logo-details">
+        <span class="logo_name">Bislerium</span>
+    </div>
+    <ul class="nav-links">
+        <!-- dashboard -->
+        <li>
+            <a href="dashboard.html">
+                <i class="fas fa-th-large"></i>
+                <span class="link_name">Dashboard</span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="dashboard.html">dashboard</a></li>
+            </ul>
+        </li>
+        <!-- Form -->
+        <li>
+            <a href="form.html">
+                <i class="fas fa-th-large"></i>
+                <span class="link_name">From </span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="form.html">From</a></li>
+            </ul>
+        </li>
+        <!-- end form -->
+        <!-- Table -->
+        <li>
+            <a href="table.html">
+                <i class="fas fa-th-large"></i>
+                <span class="link_name">Table </span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="table.html">Table</a></li>
+            </ul>
+        </li>
+        <!-- end table -->
+        <!-- category -->
+        <li>
+            <div class="icon-link">
+                <a href="report.html">
+                    <i class="fas fa-user"></i>
+                    <span class="link_name">Report</span>
+                </a>
+                <i class="fas fa-chevron-down arrow"></i>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="link_name" href="report.html">report 1</a></li>
+                <li><a href="allReportPage.html">All Report Page</a></li>
+                <li><a href="#">Category 3</a></li>
+                <li><a href="#">Category 4</a></li>
+                <li><a href="#">Category 5</a></li>
+            </ul>
+        </li>
+
+
+
+        <!-- chart -->
+        <li>
+            <a href="#">
+                <i class="fas fa-th-large"></i>
+                <span class="link_name">Chart </span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="#">Chart</a></li>
+            </ul>
+        </li>
+        <!-- category -->
+        <li>
+            <div class="icon-link">
+                <a href="#">
+                    <i class="fas fa-user"></i>
+                    <span class="link_name">Plug</span>
+                </a>
+                <i class="fas fa-chevron-down arrow"></i>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="link_name" href="#">Plugins</a></li>
+                <li><a href="#">Category 2</a></li>
+                <li><a href="#">Category 3</a></li>
+                <li><a href="#">Category 4</a></li>
+                <li><a href="#">Category 5</a></li>
+            </ul>
+        </li>
+        <!-- setting -->
+        <li>
+            <a href="#">
+                <i class="fas fa-th-large"></i>
+                <span class="link_name">Setting </span>
+            </a>
+            <ul class="sub-menu blank">
+                <li><a class="link_name" href="#">Setting</a></li>
+            </ul>
+        </li>
+        <!-- logout -->
+        <li>
+            <div class="profile-detials">
+                <div class="profile-content">
+                    <img src="/logo.jpg" alt="profile" />
+                </div>
+
+                <div class="name-job">
+                    <div class="profile_name">Ayush Gurung</div>
+                    <div class="job">Web Designer</div>
+                </div>
+                <i class="fas fa-sign-out-alt"></i>
+            </div>
+        </li>
+    </ul>
+</div>
+<section class="home-section">
+    <header>
+        <div class="home-content">
+            <i class="fas fa-bars sidebarBtn bx-menu"></i>
+            <span class="text">Dashboard</span>
+        </div>
+    </header>
+</section>
+
+<script>
+    let arrow = document.querySelectorAll(".arrow");
+
+    for (var i = 0; i < arrow.length; i++) {
+        arrow[i].addEventListener("click", (e) => {
+            let arrowParent = e.target.parentElement.parentElement;
+            arrowParent.classList.toggle("showMenu");
+        });
+    }
+
+    let sidebar = document.querySelector(".sidebar");
+    let sidebarBtn = document.querySelector(".sidebarBtn");
+    console.log(sidebarBtn);
+    sidebarBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("close");
+    });
+</script>

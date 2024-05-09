@@ -63,6 +63,27 @@
                         font-weight: 600;
                     }
 
+                .description .content .header .buttons {
+                    display: flex;
+                    flex-direction: row;
+                    gap: 10px;
+                    margin-top: 20px;
+                }
+
+                    .description .content .header .buttons button {
+                        background-color: transparent;
+                        border: 1px solid black;
+                        cursor: pointer;
+                        padding: 5px;
+                        text-transform: capitalize;
+                        border-radius: 10px;
+                    }
+
+                        .description .content .header .buttons button:hover {
+                            background-color: #000;
+                            color: #fff;
+                        }
+
         .description .body p {
             font-family: Arial, sans-serif;
             font-size: 16px;
@@ -95,7 +116,7 @@
             <div class="auther-details">
                 @if (Model.User != null)
                 {
-                    <h5>@Model.User.UserName</h5>
+                    <h5>@Model.User.FirstName @Model.User.LastName</h5>
                 }
                 else
                 {
@@ -103,6 +124,17 @@
                 }
                 <span>/</span>
                 <p>@Model.CreatedDate.ToString("dd/MM/yyyy")</p>
+            </div>
+            <div class="buttons">
+                <div class="history">
+                    <a asp-controller="Home" asp-action="BlogUpadateHistory" asp-route-id="@Model.Id">
+                        <button>History</button>
+                    </a>
+                </div>
+                <div class="vote">
+                    <button>1 <i class="fas fa-thumbs-up"></i></button>
+                    <button>2 <i class="fas fa-thumbs-down"></i></button>
+                </div>
             </div>
         </div>
         <div class="body">
@@ -166,7 +198,7 @@
                     flex: 1;
                     width: 100%;
                     height: 50px;
-                    border: 1px solid #000;
+                    border: 1px solid #b5b5b5;
                     border-radius: 5px;
                     padding: 0 10px;
                     outline: none;
@@ -205,6 +237,17 @@
                 border-radius: 50%;
             }
 
+            .blog-comments .comment .firstcmt .image i {
+                width: 50px;
+                height: 50px;
+                font-size: 30px;
+                border: 2px solid #000;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
             .blog-comments .comment .firstcmt .details {
                 width: 100%;
                 display: flex;
@@ -214,6 +257,28 @@
                 padding: 10px;
                 border-radius: 5px;
             }
+
+                .blog-comments .comment .firstcmt .details .header {
+                    display: flex;
+                    justify-content: space-between;
+                    flex-direction: row;
+                    border: none;
+                    padding: 0;
+                }
+
+                    .blog-comments .comment .firstcmt .details .header button {
+                        background-color: transparent;
+                        border: 1px solid black;
+                        cursor: pointer;
+                        padding: 5px;
+                        text-transform: capitalize;
+                        border-radius: 10px;
+                    }
+
+                        .blog-comments .comment .firstcmt .details .header button:hover {
+                            background-color: #000;
+                            color: #fff;
+                        }
 
                 .blog-comments .comment .firstcmt .details h5 {
                     font-size: 20px;
@@ -253,6 +318,7 @@
                     border-radius: 50%;
                 }
 
+
                 .blog-comments .comment .subcmt .firstSubcmt .details {
                     display: flex;
                     flex-direction: column;
@@ -262,6 +328,28 @@
                     border-radius: 5px;
                     gap: 5px;
                 }
+
+                    .blog-comments .comment .subcmt .firstSubcmt .details .header {
+                        display: flex;
+                        justify-content: space-between;
+                        flex-direction: row;
+                        border: none;
+                        padding: 0;
+                    }
+
+                        .blog-comments .comment .subcmt .firstSubcmt .details .header button {
+                            background-color: transparent;
+                            border: 1px solid black;
+                            cursor: pointer;
+                            padding: 5px;
+                            text-transform: capitalize;
+                            border-radius: 10px;
+                        }
+
+                            .blog-comments .comment .subcmt .firstSubcmt .details .header button:hover {
+                                background-color: #000;
+                                color: #fff;
+                            }
 
                     .blog-comments .comment .subcmt .firstSubcmt .details h5 {
                         font-size: 20px;
@@ -508,66 +596,80 @@
         allCommentsDiv.empty();
         console.log(comments);
         comments.forEach(function (comment) {
+            // Format the date
+            var formattedDate = new Date(comment.createdDate).toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            }).replace(/ /g, '/'); // Replace spaces with slashes
+
             var commentHtml = `
-                            <div class="comment">
-                                <div class="firstcmt">
-                                    <div class="image">
-                                               <i class="fa-regular fa-user" style="
-                              width: 50px;
-                              height: 50px;
-                              font-size: 30px;
-                              border: 2px solid #000;
-                              border-radius: 50%;
-                              display: flex;
-                              justify-content: center;
-                              align-items: center;
-                              "></i>
-                                    </div>
-                                    <div class="details">
-                                        <h5>${comment.user.userName}</h5>
-                                        <p>${comment.createdDate}</p>
-                                        <p>${comment.commentText}</p>
-                                        <div class="react">
-                                            <div class="like">
-                                                <span>12</span>
-                                                <i class="fa-regular fa-thumbs-up"></i>
-                                            </div>
-                                            <div class="like">
-                                                <span>12</span>
-                                                <i class="fa-regular fa-thumbs-down"></i>
-                                            </div>
-                                            <div class="like">
-                                                    <button onclick="addReplyForm(${comment.id})" >
-                                                    Reply
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+                <div class="comment">
+                    <div class="firstcmt">
+                        <div class="image">
+                            <i class="fa-regular fa-user" style="
+                                width: 50px;
+                                height: 50px;
+                                font-size: 30px;
+                                border: 2px solid #000;
+                                border-radius: 50%;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                            "></i>
+                        </div>
+                        <div class="details">
+                            <div class="header">
+                          <h5>${comment.user.firstName} ${comment.user.lastName}</h5>
+                      <div class="action">
+                        <button>edit</button>
+                        <button>delete</button>
+                      </div>
+                    </div>
+                            <p>(${formattedDate})</p> <!-- Display formatted date -->
+                            <p>${comment.commentText}</p>
+                            <div class="react">
+                                <div class="like">
+                                    <span>12</span>
+                                    <i class="fa-regular fa-thumbs-up"></i>
                                 </div>
-                                     <div class="addReplyForm" id="replyForm-${comment.id}">
-                                       <form id="subCommentForm" >
-                                        <div class="userImage">
-                                                <!-- <img src="~/img/banner1.jpg" alt="" /> -->
-                                        </div>
-                                        <div class="comment-input">
-                                                <input type="text"  oninput="capitalizeFirstLetter()" id="subCommentInput-${comment.id}" placeholder="Write a reply..." />
-                                        </div>
-                                        <div class="button">
-                                                <button class="">
-                                                <i class="fas fa-paper-plane"></i>
-                                            </button>
-                                        </div>
-                                    </form>
+                                <div class="like">
+                                    <span>12</span>
+                                    <i class="fa-regular fa-thumbs-down"></i>
                                 </div>
-                                <div class="subcmt">
-                                    ${renderReplies(comment.replies)}
+                                <div class="like">
+                                    <button onclick="addReplyForm(${comment.id})">
+                                        Reply
+                                    </button>
                                 </div>
                             </div>
-                        `;
+                        </div>
+                    </div>
+                    <div class="addReplyForm" id="replyForm-${comment.id}">
+                        <form id="subCommentForm">
+                            <div class="userImage">
+                                <!-- <img src="~/img/banner1.jpg" alt="" /> -->
+                            </div>
+                            <div class="comment-input">
+                                <input type="text" oninput="capitalizeFirstLetter()" id="subCommentInput-${comment.id}" placeholder="Write a reply..." />
+                            </div>
+                            <div class="button">
+                                <button class="">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="subcmt">
+                        ${renderReplies(comment.replies)}
+                    </div>
+                </div>
+            `;
 
             allCommentsDiv.append(commentHtml);
         });
     }
+
 
     // Render replies
     function renderReplies(replies) {

@@ -1,0 +1,75 @@
+﻿@model Bislerium.Models.Blogs // Assuming Blogs is the name of your Blog model
+@{
+    ViewData["Title"] = " Blog Update history ";
+}
+
+<style>
+    .blogUpdateHistory {
+        margin: 20px;
+    }
+
+        .blogUpdateHistory h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .blogUpdateHistory table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+            .blogUpdateHistory table thead {
+                background-color: #000000;
+                color: white;
+            }
+
+            .blogUpdateHistory table th,
+            .blogUpdateHistory table td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: center;
+            }
+
+            .blogUpdateHistory table tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+
+            .blogUpdateHistory table tbody tr:hover {
+                background-color: #b7b7b7;
+            }
+</style>
+
+<!-- blog update history -->
+<div class="blogUpdateHistory">
+    <div class="content">
+        <h1>Blog Update History of Coffe</h1>
+        <table>
+            <thead>
+                <tr>
+
+                    <th>User</th>
+                    <th>Update Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+
+                    <td>Ayush</td>
+                    <td>20/May/2023</td>
+                </tr>
+                <tr>
+
+                    <td>Shubham</td>
+                    <td>21/May/2023</td>
+                </tr>
+                <tr>
+
+                    <td>Shubham</td>
+                    <td>22/May/2023</td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- blog update history end -->

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Bislerium.Migrations
 {
     /// <inheritdoc />
-    public partial class Bislerium : Migration
+    public partial class NewTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,6 +30,9 @@ namespace Bislerium.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProfilePicture = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -180,6 +183,32 @@ namespace Bislerium.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BlogUpadateHistory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BlogId = table.Column<int>(type: "int", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BlogUpadateHistory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BlogUpadateHistory_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_BlogUpadateHistory_Blogs_BlogId",
+                        column: x => x.BlogId,
+                        principalTable: "Blogs",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Comment",
                 columns: table => new
                 {
@@ -322,6 +351,16 @@ namespace Bislerium.Migrations
                 column: "userId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BlogUpadateHistory_BlogId",
+                table: "BlogUpadateHistory",
+                column: "BlogId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BlogUpadateHistory_UserId",
+                table: "BlogUpadateHistory",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Comment_BlogId",
                 table: "Comment",
                 column: "BlogId");
@@ -379,6 +418,9 @@ namespace Bislerium.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "BlogUpadateHistory");
 
             migrationBuilder.DropTable(
                 name: "Notification");

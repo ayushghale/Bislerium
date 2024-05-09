@@ -216,7 +216,7 @@
                         <div class="blog__content">
                             <h3>@Html.DisplayFor(modelItem => item.Blog.Heading)</h3>
                             <h4>
-                                Author: @Html.DisplayFor(modelItem => item.Blog.User.UserName)<br />
+                                Author: @Html.DisplayFor(modelItem => item.Blog.User.FirstName) @Html.DisplayFor(modelItem => item.Blog.User.LastName)<br />
                                 (<span class="created_date">@item.Blog.CreatedDate.ToString("dd MMM yyyy")</span>)
                             </h4>
                             <p class="desc">

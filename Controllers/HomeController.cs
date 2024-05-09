@@ -21,11 +21,9 @@ namespace Bislerium.Controllers
             _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
 
             // Get recent 5 blogs
             var blogs = _context.Blogs
@@ -48,10 +46,38 @@ namespace Bislerium.Controllers
                 };
             }).ToList();
 
+            // Get top 5 blogs
+            var topFiveBlogs = await _context.Blogs
+                .Include(b => b.User)
+                .GroupJoin(
+                    _context.Reaction,
+                    blog => blog.Id,
+                    reaction => reaction.BlogId,
+                    (blog, reactions) => new
+                    {
+                        Blog = blog,
+                        Reactions = reactions,
+                    }
+                )
+                .Select(b => new BlogsWithReactionsViewModel
+                {
+                    Blog = b.Blog,
+                    UpvoteCount = b.Reactions.Where(r => r.Upvote != null && r.Upvote > 0).Count(), // Count upvotes
+                    DownvoteCount = b.Reactions.Where(r => r.Downvote != null && r.Downvote > 0).Count(), // Count downvotes
+                    IsUpvoted = b.Reactions.Any(r => r.UserID == userId && r.Upvote != null && r.Upvote > 0), // Check if the user has upvoted
+                    IsDownvoted = b.Reactions.Any(r => r.UserID == userId && r.Downvote != null && r.Downvote > 0), // Check if the user has downvoted
+                    CommentCount = _context.Comment.Count(comment => comment.BlogId == b.Blog.Id) // Count comments
+                })
+                .OrderByDescending(b => b.UpvoteCount) // Order by upvote count in descending order
+                .Take(5) // Take the top five blogs
+                .ToListAsync();
+
             TempData["RecentBlogs"] = blogsWithCounts;
+            TempData["TopFiveBlogs"] = topFiveBlogs;
 
             return View();
         }
+
 
         public async Task<IActionResult> Blogs()
         {
@@ -102,6 +128,10 @@ namespace Bislerium.Controllers
             // Pass the retrieved blog to the view
             return View(blog);
         }
+
+
+
+
 
         public IActionResult Description()
         {

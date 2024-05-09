@@ -1,0 +1,227 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="home-section">
+    <!-- header -->
+    <!-- main content -->
+    <section class="main">
+        <div class="status-graph">
+            <div class="cards">
+                <div class="card">
+                    <div class="list">
+                        <a href="#"><i class="fas fa-bars sidebarBtn bx-menu"></i></a>
+                    </div>
+                    <div class="cart-body">
+                        <div class="card-inner">
+                            <span class="font-bold text-title">578</span>
+                            <p class="text-primary-p">Number of Subscribers</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="list">
+                        <a href="#"><i class="fas fa-bars sidebarBtn bx-menu"></i></a>
+                    </div>
+                    <div class="cart-body">
+                        <div class="card-inner">
+                            <span class="font-bold text-title">578</span>
+                            <p class="text-primary-p">Number of Subscribers</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="list">
+                        <a href="#"><i class="fas fa-bars sidebarBtn bx-menu"></i></a>
+                    </div>
+                    <div class="cart-body">
+                        <div class="card-inner">
+                            <span class="font-bold text-title">578</span>
+                            <p class="text-primary-p">Number of Subscribers</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="list">
+                        <a href="#"><i class="fas fa-bars sidebarBtn bx-menu"></i></a>
+                    </div>
+                    <div class="cart-body">
+                        <div class="card-inner">
+                            <span class="font-bold text-title">578</span>
+                            <p class="text-primary-p">Number of Subscribers</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .chart {
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+                margin: 30px 0;
+                overflow: hidden;
+            }
+
+            .chart-header {
+                background-color: #f9f9f9;
+                border-bottom: 1px solid #f0f0f0;
+                padding: 10px 20px;
+            }
+
+                .chart-header .title {
+                    font-size: 1.25rem;
+                    font-weight: 600;
+                }
+
+            .chart-body {
+                padding: 20px;
+                height: 500px;
+                width: 100%;
+            }
+        </style>
+
+        <div class="chart">
+            <div class="chart-header">
+                <div class="title">
+                    <span>Chart</span>
+                </div>
+            </div>
+            <div class="chart-body">
+                <canvas id="lineChart" width=""></canvas>
+            </div>
+        </div>
+
+        <div class="dispaly-table">
+            <div class="container">
+                <div class="table-header">
+                    <div class="title">
+                        <span>Order</span>
+                    </div>
+                    <div class="date-selecter">
+                        <li><a href="##" class="active">Today</a></li>
+                        <li><a href="##">Week</a></li>
+                        <li><a href="##">Month</a></li>
+                    </div>
+                </div>
+                <div class="table-body">
+                    <table>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Number</th>
+                            <th>Address</th>
+                            <th>DOB</th>
+                        </tr>
+
+                        <tr>
+                            <td data-cell="id">1</td>
+                            <td data-cell="name">John Doe</td>
+                            <td data-cell="email">johndoe@example.com</td>
+                            <td data-cell="number">1234567890</td>
+                            <td data-cell="address">123 Main St, City</td>
+                            <td data-cell="dob">1985-07-15</td>
+                        </tr>
+                        <tr>
+                            <td data-cell="id">1</td>
+                            <td data-cell="name">John Doe</td>
+                            <td data-cell="email">johndoe@example.com</td>
+                            <td data-cell="number">1234567890</td>
+                            <td data-cell="address">123 Main St, City</td>
+                            <td data-cell="dob">1985-07-15</td>
+                        </tr>
+                        <tr>
+                            <td data-cell="id">1</td>
+                            <td data-cell="name">John Doe</td>
+                            <td data-cell="email">johndoe@example.com</td>
+                            <td data-cell="number">1234567890</td>
+                            <td data-cell="address">123 Main St, City</td>
+                            <td data-cell="dob">1985-07-15</td>
+                        </tr>
+                        <tr>
+                            <td data-cell="id">1</td>
+                            <td data-cell="name">John Doe</td>
+                            <td data-cell="email">johndoe@example.com</td>
+                            <td data-cell="number">1234567890</td>
+                            <td data-cell="address">123 Main St, City</td>
+                            <td data-cell="dob">1985-07-15</td>
+                        </tr>
+                        <tr>
+                            <td data-cell="id">1</td>
+                            <td data-cell="name">John Doe</td>
+                            <td data-cell="email">johndoe@example.com</td>
+                            <td data-cell="number">1234567890</td>
+                            <td data-cell="address">123 Main St, City</td>
+                            <td data-cell="dob">1985-07-15</td>
+                        </tr>
+                        <tr>
+                            <td data-cell="id">1</td>
+                            <td data-cell="name">John Doe</td>
+                            <td data-cell="email">johndoe@example.com</td>
+                            <td data-cell="number">1234567890</td>
+                            <td data-cell="address">123 Main St, City</td>
+                            <td data-cell="dob">1985-07-15</td>
+                        </tr>
+                        <tr>
+                            <td data-cell="id">1</td>
+                            <td data-cell="name">John Doe</td>
+                            <td data-cell="email">johndoe@example.com</td>
+                            <td data-cell="number">1234567890</td>
+                            <td data-cell="address">123 Main St, City</td>
+                            <td data-cell="dob">1985-07-15</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+<!--  chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const lineChart = document.getElementById('lineChart');
+        const lineChartLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        const lineChartSalesData = [65, 59, 80, 81, 56, 55, 40,20,10, 30, 40 , 10 ,5];
+
+        new Chart(lineChart, {
+            type: 'line',
+            data: {
+                labels: lineChartLabels,
+                datasets: [{
+                    data: lineChartSalesData,
+                    fill: true,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        ticks: {
+                            stepSize: 10 // Increase the step size to increase the gap between labels
+                        }
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false,
+                        position: "top",
+                    },
+                },
+            },
+        });
+    });
+
+
+</script>

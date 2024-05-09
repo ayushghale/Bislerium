@@ -6,6 +6,8 @@
 
     var recentBlogs = TempData["RecentBlogs"] as List<BlogsWithReactionsViewModel>;
 
+    var topFiveBlogs = TempData["TopFiveBlogs"] as List<BlogsWithReactionsViewModel>;
+
 }
 
 <!-- banner -->
@@ -34,6 +36,21 @@
 <section class="banner">
     <div class="container mySwiper">
         <div class="swiper-wrapper">
+
+            @foreach (var item in recentBlogs)
+            {
+                <div class="swiper-slide">
+                    <img src="@item.Blog.Image" alt="" />
+
+                    <div class="text">
+                        <h1 class="text-4xl font-bold text-white">@item.Blog.Heading</h1>
+                        <p class="text-lg font-semibold text-white">
+                            @item.Blog.Description
+                        </p>
+                    </div>
+                </div>
+            }
+
             <div class="images swiper-slide">
                 <img src="~/img/banner1.jpg" alt="" />
 
@@ -116,7 +133,7 @@
                         <img src="~/img/card1.jpg" alt="" />
                     </div>
                     <div class="details">
-                        <h5>@item.Blog.User.UserName</h5>
+                        <h5>@item.Blog.User.FirstName @item.Blog.User.LastName</h5>
                         <p>@item.Blog.CreatedDate.ToString("dd/MM/yyyy")</p>
                     </div>
                 </div>
@@ -131,84 +148,40 @@
     <div class="content">
         <div class="body">
             <div class="left">
-                <img src="~/img/banner1.jpg" alt="" />
-                <div class="desc">
-                    <h1>Top 3</h1>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis
-                        quod, voluptates, quae, quos quidem quibusdam
-                    </p>
-                </div>
+                @if (topFiveBlogs != null && topFiveBlogs.Any())
+                {
+                    var firstBlog = topFiveBlogs.First();
+                    <img src="~/img/banner1.jpg" alt="@firstBlog.Blog.Heading" />
+                    <div class="desc">
+                        <h1>@firstBlog.Blog.Heading</h1>
+                        <p>@firstBlog.Blog.Description</p>
+                    </div>
+                }
             </div>
             <div class="right">
-                <div class="right-top">
-                    <img src="~/img/banner2.jpg" alt="" />
-
-                    <div class="desc">
-                        <div class="desc-header">
-                            <h1>Top 3</h1>
-                            <button>
-                                <a href="#">Read more</a>
-                            </button>
+                @if (topFiveBlogs != null && topFiveBlogs.Count > 1)
+                {
+                    foreach (var blog in topFiveBlogs.Skip(1))
+                    {
+                        <div class="right-top">
+                            <img src="~/img/banner2.jpg" alt="@blog.Blog.Heading" />
+                            <div class="desc">
+                                <div class="desc-header">
+                                    <h1>@blog.Blog.Heading</h1>
+                                    <button>
+                                        <a href="#">Read more</a>
+                                    </button>
+                                </div>
+                                <p class="truncate">@blog.Blog.Description</p>
+                            </div>
                         </div>
-                        <p class="truncate">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            Quis quod, voluptates, quae, quos quidem quibusdam
-                        </p>
-                    </div>
-                </div>
-                <div class="right-top">
-                    <img src="~/img/banner3.jpg" alt="" />
-
-                    <div class="desc">
-                        <div class="desc-header">
-                            <h1>Top 3</h1>
-                            <button>
-                                <a href="#">Read more</a>
-                            </button>
-                        </div>
-                        <p class="truncate">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            Quis quod, voluptates, quae, quos quidem quibusdam
-                        </p>
-                    </div>
-                </div>
-                <div class="right-top">
-                    <img src="~/img/banner1.jpg" alt="" />
-
-                    <div class="desc">
-                        <div class="desc-header">
-                            <h1>Top 3</h1>
-                            <button>
-                                <a href="#">Read more</a>
-                            </button>
-                        </div>
-                        <p class="truncate">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            Quis quod, voluptates, quae, quos quidem quibusdam
-                        </p>
-                    </div>
-                </div>
-                <div class="right-top">
-                    <img src="~/img/banner2.jpg" alt="" />
-
-                    <div class="desc">
-                        <div class="desc-header">
-                            <h1>Top 3</h1>
-                            <button>
-                                <a href="#">Read more</a>
-                            </button>
-                        </div>
-                        <p class="truncate">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            Quis quod, voluptates, quae, quos quidem quibusdam
-                        </p>
-                    </div>
-                </div>
+                    }
+                }
             </div>
         </div>
     </div>
 </section>
+
 
 <!-- other blogs -->
 <section class="content">
@@ -246,7 +219,7 @@
                         <img src="~/img/card1.jpg" alt="" />
                     </div>
                     <div class="details">
-                        <h5>@item.Blog.User.UserName</h5>
+                        <h5>@item.Blog.User.FirstName @item.Blog.User.LastName</h5>
                         <p>@item.Blog.CreatedDate.ToString("dd/MM/yyyy")</p>
                     </div>
                 </div>
